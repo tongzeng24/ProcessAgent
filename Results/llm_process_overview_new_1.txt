@@ -1,0 +1,38 @@
+### Hydro-De-Alkylation (HDA) Process – Block-by-Block Summary
+
+1. Feed Preparation
+   • Liquid toluene (Stream B) and make-up/recycle hydrogen (Stream A + recycle loop) enter Mixer M101 at 303 K and 350 kPa.  
+   • M101 provides homogeneous vapour–phase mixing without heat duty.
+
+2. Charge Heater H101
+   • The mixed feed is fired in Heater H101 to attain the high inlet temperature required for gas-phase hydrodealkylation.  
+   • The heater operates under essentially the same pressure as the upstream mixer (≈350 kPa) and raises the temperature into the catalytic reaction window (≈827–975 K) while remaining below the metallurgical limit of common furnace tubes (≈1000 K).
+
+3. Reactor R101
+   • An adiabatic, fixed-bed catalyst reactor effects the endothermic conversion:  
+     C₆H₅CH₃ + H₂ → C₆H₆ + CH₄.  
+   • Design basis sets single-pass toluene conversion at 75 %.  
+   • Reactor effluent leaves only a few kelvin below the inlet (because the reaction is endothermic yet limited to 75 % conversion) and at roughly 350 kPa.
+
+4. High-Pressure Flash F101
+   • The hot reactor effluent is partially condensed to 305–369 K at ≈350 kPa with negligible pressure loss.  
+   • Vapour phase (rich in H₂ and CH₄) proceeds to the purge/recycle loop; liquid phase (benzene/toluene) remains for further separation.
+
+5. Purge & Recycle Loop
+   • Splitter S101 removes 20 % of the flash vapour as purge to control inerts (chiefly CH₄).  
+   • The remaining 80 % is compressed isothermally in C101 back to the original system pressure of 350 kPa and returned to Mixer M101.
+
+6. Low-Pressure Flash F102
+   • The condensed liquid from F101 is throttled across a control valve, generating a pressure drop of 2 × 10⁴ – 2 × 10⁵ Pa (negative sign convention), well within the 250 kPa mechanical limit of the vessel.  
+   • At the lower flash pressure, benzene preferentially vaporises and exits overhead; the toluene-rich bottoms are recycled or sent to further recovery.  
+   • F102 temperature is maintained in the 306–366 K window to balance benzene recovery with heat-duty economy.  
+   • By specification, the attainable temperature in Heater H101 is completely independent of the pressure drop selected for F102.
+
+7. Product Handling
+   • Benzene overhead is condensed, stabilised, and routed to storage.  
+   • Toluene bottoms can be sent back to the reaction section or exported, depending on overall plant optimisation.
+
+### Utilities & Controls (brief)
+• Fired duty in H101 is trimmed to hold R101 inlet temperature.  
+• Level control in F101/F102 maintains phase disengagement.  
+• Pressure-override control on the purge stream prevents light-gas accumulation.

@@ -1,0 +1,40 @@
+# ===========================
+# Context Agent Configuration
+# ===========================
+ContextAgent:
+  context_agent_prompt_path: "context_agent_prompt.yaml"
+  llm_constraint_save_path: "Results/generated_constraints.txt"
+  llm_constraint_avg_save_path: "Results/generated_constraints_avg.txt"
+  llm_process_overview_save_path: "Results/llm_process_overview.txt"
+  context_sampling_iterations: 5
+
+# ===========================
+# Optimization Configuration
+# ===========================
+Optimization:
+  initial_params: {
+        "H101_temperature":600,
+        "F101_temperature":325, 
+        "F102_temperature":375,
+        "F102_deltaP":-240000
+        }
+  optimization_metric: "cost"  # specify the objective to be used: "cost", "yield", "yield/cost"
+  optimization_save_path: "Results/result_cost.json" 
+
+# ===========================
+# Model Configuration
+# ===========================
+Model:
+  model: "o3-2025-04-16"
+  api_key: ""
+  base_url: "https://api.openai.com/v1"
+  model_info:
+    model: "o3-2025-04-16"
+    provider: "openai"
+    mode: "chat"
+    is_chat_model: true
+    max_tokens: 30000
+    vision: false
+    function_calling: true
+    json_output: true
+    family: "gpt-4"

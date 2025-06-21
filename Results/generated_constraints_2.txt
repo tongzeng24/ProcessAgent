@@ -1,0 +1,4 @@
+Heater H101 Temperature: [873 K, 973 K]
+Flash F101 Temperature: [300 K, 340 K]
+Flash F102 Temperature: [330 K, 380 K]
+Flash F102 ΔPressure: [-200000 Pa, -50000 Pa]
