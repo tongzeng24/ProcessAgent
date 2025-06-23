@@ -1,0 +1,15 @@
+# IDAES Process Simulation Framework
+idaes-pse==2.8.0
+
+# AutoGen Multi-Agent Framework
+autogen-agentchat==0.5.1
+autogen-core==0.5.1
+autogen-ext==0.5.1
+
+# OpenAI and LLM Dependencies
+openai==1.70.0
+tiktoken==0.9.0
+
+# Data Processing
+pandas==2.2.3
+pyyaml==6.0.2
