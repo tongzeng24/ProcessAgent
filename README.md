@@ -52,10 +52,11 @@ pip install pyyaml pandas
 
 ## Quick Start
 
- **Configure your LLM API keys** (if using OpenAI):
+ **Configure your LLM API keys**:
  ```bash
  export OPENAI_API_KEY="your-api-key-here"
  ```
+ **Then update the config.yaml file**:
 
 
 ## Key Dependencies
