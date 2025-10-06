@@ -1,4 +1,4 @@
 heater_h101_temperature  : [827.2, 975.2]
 flash_f101_temperature   : [305.6, 369.6]
 flash_f102_temperature   : [306.6, 366.6]
-flash_f102_δpressure     : [-216000, -28000]
+flash_f102_δpressure     : [-212000, -28000]
