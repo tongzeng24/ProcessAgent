@@ -9,8 +9,6 @@ from pathlib import Path
 from context_agent import generate_context
 from optimization import setup_and_run
 
-
-
 # load config
 with open("config.yaml", "r") as file:
     config = yaml.safe_load(file)
@@ -35,6 +33,9 @@ if __name__=="__main__":
             constraint_files.append(file)
         else:
             overview_files.append(file)
+    for file in overview_files:
+        with open(file, "r") as f:
+            overview_str = f.read().rstrip()
 
     constraint = []
     for file in constraint_files:
@@ -46,14 +47,15 @@ if __name__=="__main__":
                 matchs = re.match(r'(.+?):\s*\[([-\d\.]+)\s*\w*,\s*([-\d\.]+)\s*\w*\]', line)
                 if matchs:
                     name = matchs.group(1).strip()
+                    normalized_name = name.lower().replace(" ", "_")
                     low = float(matchs.group(2))
                     high = float(matchs.group(3))
-                    temp[name + " min"] = low
-                    temp[name + " max"] = high
+                    temp[normalized_name + " min"] = low
+                    temp[normalized_name + " max"] = high
             constraint.append(temp)
 
     constraint_df = pd.DataFrame(constraint)
-    avg = dict(constraint_df.mean())
+    avg = dict(constraint_df.mean().round(1))
     transformed = {}
     for key, value in avg.items():
         base_key = key.rsplit(' ', 1)[0]
@@ -71,7 +73,7 @@ if __name__=="__main__":
     print('Starting optimization based on the averaged constraints')
     # optimization
     setup_and_run(
-        context=overview_files[0], 
+        context=overview_str, 
         constraint_text = str(transformed), 
         llm_config = model_config,
         optimization_config = optimization_config, 

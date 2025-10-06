@@ -59,7 +59,8 @@ async def run_main(initial_params, metric, context, llm_config):
         api_key=llm_config["api_key"],
         model=llm_config["model"],
         base_url=llm_config["base_url"],
-        model_info=llm_config["model_info"]
+        model_info=llm_config["model_info"], 
+        # temperature=0.3
     )
 
     validator_agent = AssistantAgent(
@@ -91,10 +92,10 @@ async def run_main(initial_params, metric, context, llm_config):
     )
 
     # Agents
-    params_agent = AssistantAgent(
+    simulation_agent = AssistantAgent(
         "MetricCalculationAgent",
         description = """
-        params_agent calculates objective metric and updates progress with the one set of values H101_temperature, F101_temperature, F102_temperature, and F102_deltaP.
+        simulation_agent calculates objective metric and updates progress with the one set of values H101_temperature, F101_temperature, F102_temperature, and F102_deltaP.
         """,
         model_client=model_client,
         tools = [calculate_params_tool],
@@ -174,15 +175,15 @@ async def run_main(initial_params, metric, context, llm_config):
     )
 
 
-    # You are the UserAgent, your job is to decide initial optimal values for the temperature of heater and the pressure of the feed given the context of the problem.
+    # You are the parameter_agent, your job is to decide initial optimal values for the temperature of heater and the pressure of the feed given the context of the problem.
     # your output be H101_temperature=..., comp_ratio=...
-    user_agent = AssistantAgent(
-        "UserAgent",
+    parameter_agent = AssistantAgent(
+        "parameter_agent",
         model_client=model_client,
         description="initializes H101_temperature, F101_temperature, F102_temperature, F102_deltaP values and objective metrics.",
         system_message=(
             f""" 
-            You are the UserAgent. Your task is to propose the intial parameters and the ojective meteric to the conversation chat. 
+            You are the parameter_agent. Your task is to propose the intial parameters and the ojective meteric to the conversation chat. 
             Your response MUST strictly follow the format below: 
             Process overview: {context},
             Initial Parameters: {initial_params},
@@ -195,32 +196,23 @@ async def run_main(initial_params, metric, context, llm_config):
         last_content = messages[-1].content
         last_source = messages[-1].source
 
-        # if not messages:
-        #     return "UserAgent"    
 
-        # if last_source == "system":
-        #     return "UserAgent"
-
-        if last_source == "UserAgent":
+        if last_source == "parameter_agent":
             return validator_agent.name
 
         if last_source == "user":
-            return "UserAgent"
+            return parameter_agent.name
 
         # 3) If ValidatorAgent is the last speaker, check if error or success
         if last_source == validator_agent.name:
             if "Invalid" in last_content:
-                # # Return to whoever proposed it
-                # proposing_agent = find_proposing_agent(messages)
-                # if proposing_agent == "UserAgent":
-                #     return None
                 return suggestion_agent.name
             else:
                 # We got "True" or "VALID:" => success
-                return params_agent.name
+                return simulation_agent.name
         
         # 4) cost -> suggestion
-        if last_source == params_agent.name:
+        if last_source == simulation_agent.name:
             return suggestion_agent.name
         # 5) suggestion -> validate
         if last_source == suggestion_agent.name:
@@ -232,9 +224,9 @@ async def run_main(initial_params, metric, context, llm_config):
     
     termination = TextMentionTermination("TERMINATE")
 
-    # Set up the team with the UserAgent and other predefined agents
+    # Set up the team with the predefined agents
     team = SelectorGroupChat(
-        [user_agent, validator_agent, params_agent, suggestion_agent],
+        [parameter_agent, validator_agent, simulation_agent, suggestion_agent],
         model_client=model_client,
         termination_condition=termination,
         selector_prompt="You are the high-level conversation controller.",
@@ -297,5 +289,7 @@ def setup_and_run(
     output_path = optimization_config['optimization_save_path']
     with open(output_path, "w") as f:
         json.dump(task_output, f, indent=2)
+    
+    print("Optimization result saved to path ", output_path)
 
     return task_output
